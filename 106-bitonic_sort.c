@@ -11,10 +11,10 @@
  */
 void bitonic_sort(int *array, size_t size)
 {
-    if (array == NULL || size < 2)
-        return;
+	if (array == NULL || size < 2)
+		return;
 
-    bitonic_sort_recursive(array, size, 0, size, 1);
+	bitonic_sort_recursive(array, size, 0, size, 1);
 }
 
 /**
@@ -30,15 +30,15 @@ void bitonic_sort(int *array, size_t size)
  * Return: void
  */
 void bitonic_sort_recursive(int *array, size_t size, size_t start,
-                            size_t count, int dir)
+			    size_t count, int dir)
 {
-    if (count > 1)
-    {
-        size_t k = count / 2;
-        bitonic_merge_recursive(array, size, start, k, dir);
-        bitonic_sort_recursive(array, size, start, k, dir);
-        bitonic_sort_recursive(array, size, start + k, k, !dir);
-    }
+	if (count > 1)
+	{
+		size_t k = count / 2;
+		bitonic_merge_recursive(array, size, start, k, dir);
+		bitonic_sort_recursive(array, size, start, k, dir);
+		bitonic_sort_recursive(array, size, start + k, k, !dir);
+	}
 }
 
 /**
@@ -55,20 +55,20 @@ void bitonic_sort_recursive(int *array, size_t size, size_t start,
  * Return: void
  */
 void bitonic_merge_recursive(int *array, size_t size, size_t start,
-                             size_t count, int dir)
+			     size_t count, int dir)
 {
-    if (count > 1)
-    {
-        size_t k = count / 2;
-        size_t i;
+	if (count > 1)
+	{
+		size_t k = count / 2;
+		size_t i;
 
-        for (i = start; i < start + k; i++)
-            if ((array[i] > array[i + k]) == dir)
-                swap(&array[i], &array[i + k]);
+		for (i = start; i < start + k; i++)
+			if ((array[i] > array[i + k]) == dir)
+				swap(&array[i], &array[i + k]);
 
-        bitonic_merge_recursive(array, size, start, k, dir);
-        bitonic_merge_recursive(array, size, start + k, k, dir);
-    }
+		bitonic_merge_recursive(array, size, start, k, dir);
+		bitonic_merge_recursive(array, size, start + k, k, dir);
+	}
 }
 
 /**
@@ -81,8 +81,8 @@ void bitonic_merge_recursive(int *array, size_t size, size_t start,
  */
 void swap(int *a, int *b)
 {
-    int tmp = *a;
-    *a = *b;
-    *b = tmp;
+	int tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
 
