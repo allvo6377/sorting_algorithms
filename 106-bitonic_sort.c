@@ -35,6 +35,7 @@ void bitonic_sort_recursive(int *array, size_t size, size_t start,
 	if (count > 1)
 	{
 		size_t k = count / 2;
+
 		bitonic_merge_recursive(array, size, start, k, dir);
 		bitonic_sort_recursive(array, size, start, k, dir);
 		bitonic_sort_recursive(array, size, start + k, k, !dir);
@@ -82,6 +83,7 @@ void bitonic_merge_recursive(int *array, size_t size, size_t start,
 void swap(int *a, int *b)
 {
 	int tmp = *a;
+
 	*a = *b;
 	*b = tmp;
 }
