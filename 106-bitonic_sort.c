@@ -1,4 +1,5 @@
 #include "sort.h"
+#include <stdio.h>
 #include <stdbool.h>
 
 void swap(int *a, int *b)
@@ -6,6 +7,19 @@ void swap(int *a, int *b)
     int temp = *a;
     *a = *b;
     *b = temp;
+}
+
+void print_array(const int *array, size_t size)
+{
+    size_t i;
+
+    for (i = 0; i < size; i++)
+    {
+        if (i > 0)
+            printf(", ");
+        printf("%d", array[i]);
+    }
+    printf("\n");
 }
 
 void bitonic_merge(int *array, size_t size, bool up)
@@ -47,5 +61,4 @@ void bitonic_sort(int *array, size_t size)
 
     bitonic_sort_rec(array, size, true);
 }
-
 
