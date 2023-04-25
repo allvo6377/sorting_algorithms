@@ -1,80 +1,39 @@
 #include "sort.h"
-#include <stdio.h>
 
 /**
- * swap_nodes - Swaps two nodes in a doubly linked list.
+ * insertion_sort_list - Sorts a doubly linked list of integers in ascending
+ *                       order using the Insertion sort algorithm
  *
- * @list:  Double pointer to the head of the list.
- * @node1: First node to swap.
- * @node2: Second node to swap.
- */
-void swap_nodes(listint_t **list, listint_t *node1, listint_t *node2)
-{
-	if (node1 == node2)
-		return;
-
-	if (node1->next == node2)
-	{
-		node1->next = node2->next;
-		if (node2->next != NULL)
-			node2->next->prev = node1;
-		node2->prev = node1->prev;
-		if (node1->prev != NULL)
-			node1->prev->next = node2;
-		else
-			*list = node2;
-		node2->next = node1;
-		node1->prev = node2;
-	}
-	else
-	{
-		listint_t *tmp = node1->prev;
-
-		node1->prev = node2->prev;
-		if (node2->prev != NULL)
-			node2->prev->next = node1;
-		else
-			*list = node1;
-
-		node2->prev = tmp;
-		if (tmp != NULL)
-			tmp->next = node2;
-
-		tmp = node1->next;
-		node1->next = node2->next;
-		if (node2->next != NULL)
-			node2->next->prev = node1;
-
-		node2->next = tmp;
-		tmp->prev = node2;
-	}
-	print_list(*list);
-}
-
-/**
- * insertion_sort_list - Sorts a doubly linked list of integers in
- *                        ascending order
- *                        using the Insertion sort algorithm.
+ * @list: Pointer to a pointer to the head of the list
  *
- * @list: Double pointer to the head of the list.
+ * Return: void
  */
 void insertion_sort_list(listint_t **list)
 {
-	listint_t *current, *insert;
+        listint_t *curr = *list, *next = NULL;
 
-	if (list == NULL || *list == NULL || (*list)->next == NULL)
-		return;
+        while (curr != NULL)
+        {
+                next = curr->next;
 
-	current = (*list)->next;
-	while (current != NULL)
-	{
-		insert = current;
-		while (insert->prev != NULL && insert->n < insert->prev->n)
-		{
-			swap_nodes(list, insert->prev, insert);
-			insert = insert->prev;
-		}
-		current = current->next;
-	}
+                while (curr->prev != NULL && curr->prev->n > curr->n)
+                {
+                        curr->prev->next = curr->next;
+
+                        if (curr->next != NULL)
+                                curr->next->prev = curr->prev;
+
+                        curr->next = curr->prev;
+                        curr->prev = curr->prev->prev;
+                        curr->next->prev = curr;
+
+                        if (curr->prev == NULL)
+                                *list = curr;
+
+                        print_list(*list);
+                }
+
+                curr = next;
+        }
 }
 
