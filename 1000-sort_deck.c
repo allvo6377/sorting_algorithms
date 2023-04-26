@@ -123,7 +123,7 @@ void sort_deck(deck_node_t **deck)
 	if (!array)
 		return;
 
-	qsort(array, size, sizeof(card_t *), compare_cards);
+	qsort(array, size, sizeof(card_t *), compare_cards); /* sort the array using quick sort and compare_cards function */
 
 	update_deck(deck, array, size); /* update the deck with the sorted array */
 
