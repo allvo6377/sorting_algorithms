@@ -43,39 +43,31 @@ int compare_cards(const void *a, const void *b)
 }
 
 /**
- * count_deck - counts the number of nodes in the deck
+ * sort_deck - sorts a deck of cards using quick sort
  * @deck: pointer to the head of the doubly linked list
- * Return: number of nodes in the deck
  */
-size_t count_deck(deck_node_t **deck)
+void sort_deck(deck_node_t **deck)
 {
 	deck_node_t *node = NULL;
-	size_t size = 0;
+	size_t size = 0, i = 0;
+	const card_t **array = NULL;
 
+	/* check for null or single node deck */
+	if (!deck || !*deck || !(*deck)->next)
+		return;
+
+	/* count the number of nodes in the deck */
 	node = *deck;
 	while (node)
 	{
 		size++;
 		node = node->next;
 	}
-	return (size);
-}
 
-/**
- * create_array - creates an array of pointers to the cards
- * @deck: pointer to the head of the doubly linked list
- * @size: size of the array
- * Return: pointer to the array or NULL on failure
- */
-const card_t **create_array(deck_node_t **deck, size_t size)
-{
-	const card_t **array = NULL;
-	deck_node_t *node = NULL;
-	size_t i = 0;
-
+	/* create an array of pointers to the cards */
 	array = malloc(sizeof(card_t *) * size);
 	if (!array)
-		return (NULL);
+		return;
 
 	node = *deck;
 	while (node)
@@ -83,49 +75,19 @@ const card_t **create_array(deck_node_t **deck, size_t size)
 		array[i++] = node->card;
 		node = node->next;
 	}
-	return (array);
-}
 
-/**
- * update_deck - updates the deck with the sorted array
- * @deck: pointer to the head of the doubly linked list
- * @array: pointer to the array of pointers to cards
- * @size: size of the array and deck
- */
-void update_deck(deck_node_t **deck, const card_t **array, size_t size)
-{
-	deck_node_t *node = NULL;
-	size_t i = 0;
+	/* sort the array using quick sort and compare_cards function */
+	qsort(array, size, sizeof(card_t *), compare_cards);
 
+	/* update the deck with the sorted array */
 	node = *deck;
+	i = 0;
 	while (node)
 	{
 		node->card = array[i++];
 		node = node->next;
 	}
-}
 
-/**
- * sort_deck - sorts a deck of cards using quick sort
- * @deck: pointer to the head of the doubly linked list
- */
-void sort_deck(deck_node_t **deck)
-{
-	size_t size = 0;
-	const card_t **array = NULL;
-
-	/* check for null or single node deck */
-	if (!deck || !*deck || !(*deck)->next)
-		return;
-
-	size = count_deck(deck); /* count the number of nodes in the deck */
-	array = create_array(deck, size); /* create an array of pointers to cards */
-	if (!array)
-		return;
-
-	qsort(array, size, sizeof(card_t *), compare_cards); /* sort the array using quick sort and compare_cards function */
-
-	update_deck(deck, array, size); /* update the deck with the sorted array */
-
-	free(array); /* free the array */
+	/* free the array */
+	free(array);
 }
