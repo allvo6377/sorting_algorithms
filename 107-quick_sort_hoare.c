@@ -1,58 +1,89 @@
 #include "sort.h"
 
 /**
- * quick_sort_hoare - implementation of quick sort algorithm
- * using hoare partition scheme
- *
- * @array: the array of integers to sort
- * @size: size of the array
- * Return: void
+ * swap - swaps two elements in an array
+ * @a: pointer to the first element
+ * @b: pointer to the second element
  */
-
-void quick_sort_hoare(int *array, size_t size)
+void swap(int *a, int *b)
 {
-    int lo = 0, hi = size - 1;
-
-    if (array == NULL || size < 2)
-        return;
-
-    hoare_partition(array, lo, hi, size);
+	int t = *a;
+	*a = *b;
+	*b = t;
 }
 
 /**
- * hoare_partition - implementation of hoare partition scheme
- *
- * @array: the array of integers to sort
- * @lo: lowest index of partition
- * @hi: highest index of partition
- * @size: size of the array
- * Return: index of partition
+ * print_array - prints an array of integers
+ * @arr: the array to be printed
+ * @n: the size of the array
  */
-
-int hoare_partition(int *array, int lo, int hi, size_t size)
+void print_array(int arr[], size_t n)
 {
-    int pivot = array[hi], tmp;
-    int i = lo - 1, j = hi + 1;
+	size_t i;
 
-    while (1)
-    {
-        do {
-            i++;
-        } while (array[i] < pivot);
-
-        do {
-            j--;
-        } while (array[j] > pivot);
-
-        if (i >= j)
-            return j;
-
-        tmp = array[i];
-        array[i] = array[j];
-        array[j] = tmp;
-
-        print_array(array, size);
-    }
+	for (i = 0; i < n; i++)
+		printf("%d ", arr[i]);
+	printf("\n");
 }
 
+/**
+ * hoare_partition - partitions an array using Hoare scheme
+ * @arr: the array to be partitioned
+ * @low: the lowest index of the subarray
+ * @high: the highest index of the subarray
+ * Return: the final partition index
+ */
+int hoare_partition(int arr[], int low, int high)
+{
+	int pivot = arr[high]; /* pivot */
+	int i = low - 1; /* index of smaller element */
+	int j;
 
+	for (j = low; j <= high - 1; j++)
+	{
+		/* If current element is smaller than or equal to pivot */
+		if (arr[j] <= pivot)
+		{
+			i++; /* increment index of smaller element */
+			swap(&arr[i], &arr[j]); /* swap current element with index */
+			print_array(arr, high - low + 1); /* print the array after swapping */
+		}
+	}
+	swap(&arr[i + 1], &arr[high]); /* swap pivot with index */
+	print_array(arr, high - low + 1); /* print the array after swapping */
+	return (i + 1); /* return the partition index */
+}
+
+/**
+ * quick_sort_hoare - sorts an array using Quick sort algorithm
+ * @arr: the array to be sorted
+ * @low: the lowest index of the subarray
+ * @high: the highest index of the subarray
+ */
+void quick_sort_hoare(int arr[], size_t low, size_t high)
+{
+	if (low < high)
+	{
+		/* pi is partitioning index, arr[pi] is now at right place */
+		size_t pi = hoare_partition(arr, low, high);
+
+		/* Recursively sort elements before and after partition */
+		quick_sort_hoare(arr, low, pi - 1);
+		quick_sort_hoare(arr, pi + 1, high);
+	}
+}
+
+/**
+ * main - driver program to test above functions
+ * Return: always 0
+ */
+int main(void)
+{
+	int arr[] = {10, 7, 8, 9, 1, 5};
+	size_t n = sizeof(arr) / sizeof(arr[0]);
+
+	quick_sort_hoare(arr, 0, n - 1);
+	printf("Sorted array: \n");
+	print_array(arr, n);
+	return (0);
+}
