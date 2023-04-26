@@ -47,7 +47,7 @@ int hoare_partition(int *array, size_t size, int low, int high)
 }
 
 /**
- * quick_sort_hoare_rec - recursively sorts an array using quick sort with Hoare scheme
+ * quick_sort_hoare_rec - recursively sorts an array using quick sort
  * @array: pointer to the array
  * @size: size of the array
  * @low: starting index of the partition
@@ -59,14 +59,23 @@ void quick_sort_hoare_rec(int *array, size_t size, int low, int high)
 
 	if (low < high)
 	{
-		p = hoare_partition(array, size, low, high);
-		quick_sort_hoare_rec(array, size, low, p);
-		quick_sort_hoare_rec(array, size, p + 1, high);
+		p = hoare_partition(array,
+				    size,
+				    low,
+				    high);
+		quick_sort_hoare_rec(array,
+				     size,
+				     low,
+				     p);
+		quick_sort_hoare_rec(array,
+				     size,
+				     p + 1,
+				     high);
 	}
 }
 
 /**
- * quick_sort_hoare - sorts an array of integers in ascending order using quick sort with Hoare scheme
+ * quick_sort_hoare - sorts an array of integers in ascending order
  * @array: pointer to the array
  * @size: size of the array
  */
